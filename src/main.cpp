@@ -4,7 +4,6 @@
 
 // Stepper Motor
 #include "Stepper.h"
-int SPU = 2048;
 Stepper Motor(SPU, 33, 32, 31, 30); // IN 1, 2, 3, 4
 
 // LCD Display
@@ -32,10 +31,18 @@ int counter_display_f = 15;
 int counter_display_g = 22;
 int counter_display_p = 24;
 
+int SPU = 2048;
+
 int counter;
-int ball_counter;
+int ballCounter;
 int gameWorks;
 int SchwelleDunkelheit = XX; // Helligkeit, übeprüfen wenn angeschlossen
+
+int ballInWheel = 0;
+int turnWheel = false;
+int wheelSteps = 0;
+
+int BallWasOnA1 = false;
 
 // =============== FUNCTIONS ===============
 
@@ -48,7 +55,7 @@ int startGame() {
   lcd.setCursor(0, 0);
   lcd.print("Game soon starts...");
 
-  ball_counter = 3;
+  ballCounter = 3;
   for (int pin = 3; pin <= 5; pin++) {
     digitalWrite(pin, HIGH);
   }
@@ -60,10 +67,15 @@ int detectRollOver() {
   // --------------- GETTING POINTS ---------------
 
   // links
-  if (analogRead(A1) <= SchwelleDunkelheit) {
-    counter += 100;
+  if ((analogRead(A1) <= SchwelleDunkelheit) && !BallWasOnA1) {
     digitalWrite(13, HIGH);
+    counter += 100;
+    BallWasOnA1 = true;
+  } else if (analogRead(A1) >= SchwelleDunkelheit) {
+    BallWasOnA1 = false;
   }
+  
+  
   if (analogRead(A2) <= SchwelleDunkelheit) {
     counter += 100;
     digitalWrite(12, HIGH);
@@ -90,26 +102,53 @@ int detectRollOver() {
     counter += 100;
     digitalWrite(8, HIGH);
   }
-
   // analogRead für Drehrad + Motor
+  if (analogRead(A7) == HIGH) {
+    counter += 100;
+    digitalWrite(34, HIGH);
+  }
+
+  if (analogRead(A8) == HIGH) {
+    counter += 100;
+    digitalWrite(35, HIGH);
+    int LED35Time = millis();
+    ballInWheel++;
+    if (ballInWheel == 3) {
+      turnWheel = true;
+      ballInWheel = 0;
+      counter += 20;
+    }
+  }
+  if (turnWheel == true && (wheelSteps == 3 / 4 * 2048)) {
+    wheelSteps += 20;
+    Motor.step(20);
+  } else {
+    wheelSteps = 0;
+    turnWheel = false;
+  }
+
+  if (analogRead(A9) == HIGH) {
+    counter += 100;
+    digitalWrite(36, HIGH);
+  }
 
   // Variable, wie lang die LED an ist, ev variable auslesen in loop
 
   // --------------- BALL LOST ---------------
   if ((analogRead(A3) < SchwelleDunkelheit) || (analogRead(A4) < SchwelleDunkelheit)) {
-    ball_counter--;
+    ballCounter--;
   }
-  if (ball_counter == 2) {
+  if (ballCounter == 2) {
     digitalWrite(3, LOW);
-  } else if (ball_counter == 1) {
+  } else if (ballCounter == 1) {
     digitalWrite(4, LOW);
   }
-  if (ball_counter == 0) {
+  if (ballCounter == 0) {
     digitalWrite(5, LOW);
     endGame();
   }
 
-  return counter, ball_counter;
+  return counter, ballCounter;
 }
 
 int endGame() {
