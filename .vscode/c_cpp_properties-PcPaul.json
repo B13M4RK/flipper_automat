@@ -1,0 +1,62 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/include",
+                "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/src",
+                "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/Stepper-master/src",
+                "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/SevSeg-master",
+                "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/LiquidCrystal_I2C-1.1.2",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/include",
+                    "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/src",
+                    "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/Stepper-master/src",
+                    "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/SevSeg-master",
+                    "C:/Users/pauld/OneDrive/Dokumente/schule/NWT/Abschlussprojekt/abschlussprojekt_code/lib/LiquidCrystal_I2C-1.1.2",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/pauld/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60118",
+                "ARDUINO_AVR_ADK",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega2560__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/pauld/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}

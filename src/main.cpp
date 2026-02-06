@@ -1,13 +1,28 @@
+// =============== LIBRARIES ===============
+
 #include <Arduino.h>
+
+// Stepper Motor
+#include "Stepper.h"
+int SPU = 2048;
+Stepper Motor(SPU, 33, 32, 31, 30); // IN 1, 2, 3, 4
+
+// LCD Display
+#include "LiquidCrystal_I2C.h"
+#include "Wire.h"
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // digit display
 #include "SevSeg.h"
 SevSeg sevseg;
 
+// =============== Global Variables ===============
+
 int counter_display_1 = 2;
 int counter_display_2 = 16;
 int counter_display_3 = 17;
 int counter_display_4 = 19;
+
 int counter_display_a = 14;
 int counter_display_b = 18;
 int counter_display_c = 23;
@@ -17,83 +32,99 @@ int counter_display_f = 15;
 int counter_display_g = 22;
 int counter_display_p = 24;
 
-// Stepper Motor
-#include "Stepper.h"
-int SPU = 2048;
-Stepper Motor(SPU, 33, 32, 31, 30); // IN 1, 2, 3, 4
-
-// LCD Display
-#include "Wire.h"
-#include "LiquidCrystal_I2C.h"
-LiquidCrystal_I2C lcd(0x27, 16, 2);
-
 int counter;
-int balls;
+int ball_counter;
+int gameWorks;
+int SchwelleDunkelheit = XX; // Helligkeit, übeprüfen wenn angeschlossen
 
-// FUNCTIONS
-int startGame()
-{
+// =============== FUNCTIONS ===============
+
+int startGame() {
+  gameWorks = true;
   counter = 0;
-  sevseg.refreshDisplay();
+
   sevseg.setNumber(counter);
-  lcd.init();
+
   lcd.setCursor(0, 0);
   lcd.print("Game soon starts...");
-  for (int pin = 3; pin <= 5; pin++)
-  {
+
+  ball_counter = 3;
+  for (int pin = 3; pin <= 5; pin++) {
     digitalWrite(pin, HIGH);
   }
 
   return counter;
 };
 
-int SchwelleDunkelheit = XX; // Helligkeit, übeprüfen wenn angeschlossen
-int detectRollOver()
-{
+int detectRollOver() {
+  // --------------- GETTING POINTS ---------------
+
   // links
-  if (A1 <= SchwelleDunkelheit)
-  {
+  if (analogRead(A1) <= SchwelleDunkelheit) {
     counter += 100;
     digitalWrite(13, HIGH);
   }
-  if (A2 <= SchwelleDunkelheit)
-  {
+  if (analogRead(A2) <= SchwelleDunkelheit) {
     counter += 100;
     digitalWrite(12, HIGH);
   }
   // rechts
-  if (A5 <= SchwelleDunkelheit)
-  {
+  if (analogRead(A5) <= SchwelleDunkelheit) {
     counter += 100;
     digitalWrite(39, HIGH);
   }
-  if (A6 <= SchwelleDunkelheit)
-  {
+  if (analogRead(A6) <= SchwelleDunkelheit) {
     counter += 100;
     digitalWrite(38, HIGH);
   }
   // kasten
-  if (digitalRead(11) == HIGH)
-  {
-    counter += 100;
-    digitalWrite(8, HIGH);
-  }
-  if (digitalRead(11) == HIGH)
-  {
-    counter += 100;
-    digitalWrite(7, HIGH);
-  }
-  if (digitalRead(11) == HIGH)
-  {
+  if (digitalRead(11) == HIGH) {
     counter += 100;
     digitalWrite(6, HIGH);
   }
+  if (digitalRead(10) == HIGH) {
+    counter += 100;
+    digitalWrite(7, HIGH);
+  }
+  if (digitalRead(9) == HIGH) {
+    counter += 100;
+    digitalWrite(8, HIGH);
+  }
 
-  // Variable für Zeit
+  // analogRead für Drehrad + Motor
+
+  // Variable, wie lang die LED an ist, ev variable auslesen in loop
+
+  // --------------- BALL LOST ---------------
+  if ((analogRead(A3) < SchwelleDunkelheit) || (analogRead(A4) < SchwelleDunkelheit)) {
+    ball_counter--;
+  }
+  if (ball_counter == 2) {
+    digitalWrite(3, LOW);
+  } else if (ball_counter == 1) {
+    digitalWrite(4, LOW);
+  }
+  if (ball_counter == 0) {
+    digitalWrite(5, LOW);
+    endGame();
+  }
+
+  return counter, ball_counter;
 }
 
-void setup()
-{
+int endGame() {
+  gameWorks = false;
+  counter = 0;
+
+  lcd.clear();
+  lcd.print("You lost");
+
+  delay(5000);
+  lcd.clear();
+  lcd.print("Put in 1€");
+}
+
+void setup() {
   // -------------BALL-------------
   // Ballausgabe
   pinMode(40, OUTPUT);
@@ -137,7 +168,9 @@ void setup()
   byte segmentPins[] = {counter_display_a, counter_display_b, counter_display_c, counter_display_d, counter_display_e, counter_display_f, counter_display_g, counter_display_p};
   sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins); // is it common cathode or anode?
   sevseg.setBrightness(90);
+
   // -------------Andere-------------
+  gameWorks = false;
   // Startknopf
   pinMode(27, INPUT);
   // Münzeinwurf
@@ -145,14 +178,19 @@ void setup()
   // Best Player Anzeige (LCD)
   lcd.init();
   lcd.backlight();
+  lcd.clear();
+  lcd.print("Put in 1€");
 }
 
-void loop()
-{
-  if (digitalRead(27) == HIGH)
-  {
+// =============== LOOP ===============
+
+void loop() {
+  if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
     startGame();
   }
 
   detectRollOver();
+
+  sevseg.setNumber(counter);
+  sevseg.refreshDisplay();
 }
