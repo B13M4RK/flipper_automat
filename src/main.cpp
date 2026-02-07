@@ -314,7 +314,6 @@ void handleLEDs() {
             LEDOnA2 = false;
         }
     }
-    // not 3 or 4 because it detects if ball is gone (no LED)
     if (LEDOnA5 == true) {
         digitalWrite(39, HIGH);
         if (millis() - LEDTimeA5 >= LEDTime) {
