@@ -163,7 +163,7 @@ void detectRollOver() {
         BallWasOnA6 = false;
     }
 
-    // KASTEN xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    // KASTEN
     int sensorValueD9 = digitalRead(9);
     if (sensorValueD9 == HIGH && !BallWasOnD9) {
         // edge detection
@@ -249,6 +249,7 @@ void detectRollOver() {
     } else {
         wheelSteps = 0;
         turnWheel = false;
+        counter += 300;
     }
 
     int sensorValueA9 = analogRead(A9);
