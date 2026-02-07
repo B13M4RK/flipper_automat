@@ -19,9 +19,20 @@ Dieses Projekt ist ein selbst gebauter Flipperautomat, der mit einem Arduino ges
 - Fotowiderstände
 - Holz
 
-### Spielregeln
+## Spielregeln
 
 - Der Spieler startet das Spiel mit dem Startknopf.
 - Jeder Sensor gibt 100 Punkte, wenn alle drei Taster vom Kasten, dann X.
 - Bei 3 Bällen im Rad bekommt man 300 Punkte.
 - Wenn der Ball einen der beiden unteren Sensoren auslöst, ist er weg und man bekommt ihn nicht mehr. Insgesamt kann man 3 Bälle haben. Danach ist das Spiel verloren.
+
+## Entwicklungszeitraum
+
+Die Software wurde in einem intensiven *zweitägigen* Entwicklungsprozess erstellt.
+Die Git-Commits zeigen die schrittweise Erweiterung:
+- Grundlogik und Setup
+- Punkte- und LED-System
+- Drehrad-Mechanik
+- Fehlerbehebungen bei analogRead
+- EndGame- und BallLost-Logik
+- README und Dokumentation
