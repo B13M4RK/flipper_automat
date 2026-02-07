@@ -55,6 +55,34 @@ bool BallWasOnD9 = false;
 bool BallWasOnD10 = false;
 bool BallWasOnD11 = false;
 
+int LEDTime = 2000;
+
+bool LEDOnA1 = false;
+unsigned long LEDTimeA1;
+bool LEDOnA2 = false;
+unsigned long LEDTimeA2;
+bool LEDOnA3 = false;
+unsigned long LEDTimeA3;
+bool LEDOnA4 = false;
+unsigned long LEDTimeA4;
+bool LEDOnA5 = false;
+unsigned long LEDTimeA5;
+bool LEDOnA6 = false;
+unsigned long LEDTimeA6;
+bool LEDOnA7 = false;
+unsigned long LEDTimeA7;
+bool LEDOnA8 = false;
+unsigned long LEDTimeA8;
+bool LEDOnA9 = false;
+unsigned long LEDTimeA9;
+
+bool LEDOnD9 = false;
+unsigned long LEDTimeD9;
+bool LEDOnD10 = false;
+unsigned long LEDTimeD10;
+bool LEDOnD11 = false;
+unsigned long LEDTimeD11;
+
 // =============== FUNCTIONS ===============
 
 int startGame() {
@@ -78,84 +106,134 @@ void detectRollOver() {
     // LINKS
     int sensorValueA1 = analogRead(A1);
     if ((sensorValueA1 <= SchwelleDunkelheit) && !BallWasOnA1) {
+        // edge detection
         counter += 100;
-        digitalWrite(13, HIGH);
         BallWasOnA1 = true;
+
+        // time detection
+        LEDOnA1 = true;
+        LEDTimeA1 = millis();
+
     } else if (sensorValueA1 >= SchwelleDunkelheit) {
+        // intervall stops
         BallWasOnA1 = false;
     }
 
     int sensorValueA2 = analogRead(A2);
     if (sensorValueA2 <= SchwelleDunkelheit && !BallWasOnA2) {
+        // edge detection
         counter += 100;
-        digitalWrite(12, HIGH);
         BallWasOnA2 = true;
+
+        // time detection
+        LEDOnA2 = true;
+        LEDTimeA2 = millis();
+
     } else if (sensorValueA2 >= SchwelleDunkelheit) {
+        // intervall stops
         BallWasOnA2 = false;
     }
 
     // RECHTS
     int sensorValueA5 = analogRead(A5);
     if (sensorValueA5 <= SchwelleDunkelheit && !BallWasOnA5) {
+        // edge detection
         counter += 100;
-        digitalWrite(39, HIGH);
         BallWasOnA5 = true;
+
+        // time detection
+        LEDOnA5 = true;
+        LEDTimeA5 = millis();
+
     } else if (sensorValueA5 >= SchwelleDunkelheit) {
         BallWasOnA5 = false;
     }
+
     int sensorValueA6 = analogRead(A6);
     if (sensorValueA6 <= SchwelleDunkelheit && !BallWasOnA6) {
+        // edge detection
         counter += 100;
-        digitalWrite(38, HIGH);
         BallWasOnA6 = true;
+
+        // time detection
+        LEDOnA6 = true;
+        LEDTimeA6 = millis();
+
     } else if (sensorValueA6 >= SchwelleDunkelheit) {
         BallWasOnA6 = false;
     }
 
-    // KASTEN
-    int sensorValueD11 = digitalRead(11);
-    if (sensorValueD11 == HIGH && !BallWasOnD11) {
-        counter += 100;
-        digitalWrite(6, HIGH);
-        BallWasOnD11 = true;
-    } else if (sensorValueD11 == LOW) {
-        BallWasOnD11 = false;
-    }
-
-    int sensorValueD10 = digitalRead(10);
-    if (sensorValueD10 == HIGH && !BallWasOnD10) {
-        counter += 100;
-        digitalWrite(7, HIGH);
-        BallWasOnD10 = true;
-    } else if (sensorValueD10 == LOW) {
-        BallWasOnD10 = false;
-    }
-
+    // KASTEN xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     int sensorValueD9 = digitalRead(9);
     if (sensorValueD9 == HIGH && !BallWasOnD9) {
+        // edge detection
         counter += 100;
-        digitalWrite(8, HIGH);
         BallWasOnD9 = true;
+
+        // time detection
+        LEDOnD9 = true;
+        LEDTimeD9 = millis();
+
     } else if (sensorValueD9 == LOW) {
         BallWasOnD9 = false;
     }
 
-    // analogRead für Drehrad + Motor
+    int sensorValueD10 = digitalRead(10);
+    if (sensorValueD10 == HIGH && !BallWasOnD10) {
+        // edge detection
+        counter += 100;
+        BallWasOnD10 = true;
+
+        // time detection
+        LEDOnD10 = true;
+        LEDTimeD10 = millis();
+
+    } else if (sensorValueD10 == LOW) {
+        BallWasOnD10 = false;
+    }
+
+    int sensorValueD11 = digitalRead(11);
+    if (sensorValueD11 == HIGH && !BallWasOnD11) {
+        // edge detection
+        counter += 100;
+        BallWasOnD11 = true;
+
+        // time detection
+        LEDOnD11 = true;
+        LEDTimeD11 = millis();
+
+    } else if (sensorValueD11 == LOW) {
+        BallWasOnD11 = false;
+    }
+    
+    // DREHRAD UND SENSOREN DARÜBER
     int sensorValueA7 = analogRead(A7);
     if (sensorValueA7 <= SchwelleDunkelheit && !BallWasOnA7) {
+
+        // edge detection
         counter += 100;
-        digitalWrite(34, HIGH);
         BallWasOnA7 = true;
+
+        // time detection
+        LEDOnA7 = true;
+        LEDTimeA7 = millis();
+
     } else if (sensorValueA7 >= SchwelleDunkelheit) {
         BallWasOnA7 = false;
     }
 
     int sensorValueA8 = analogRead(A8);
     if (sensorValueA8 <= SchwelleDunkelheit && !BallWasOnA8) {
+
+        // edge detection
         counter += 100;
-        digitalWrite(35, HIGH);
         BallWasOnA8 = true;
 
+        // time detection
+        LEDOnA8 = true;
+        LEDTimeA8 = millis();
+
+        // spin wheel detection
         ballInWheel++;
         if (ballInWheel == 3) {
             turnWheel = true;
@@ -175,26 +253,35 @@ void detectRollOver() {
 
     int sensorValueA9 = analogRead(A9);
     if (sensorValueA9 <= SchwelleDunkelheit && !BallWasOnA9) {
+
+        // edge detection
         counter += 100;
-        digitalWrite(36, HIGH);
         BallWasOnA9 = true;
+
+        // time detection
+        LEDOnA9 = true;
+        LEDTimeA9 = millis();
+
     } else if (sensorValueA9 >= SchwelleDunkelheit) {
         BallWasOnA9 = false;
     }
-
-    // Variable, wie lang die LED an ist, ev variable auslesen in loop
 
     // --------------- BALL LOST ---------------
     int sensorValueA3 = analogRead(A3);
     int sensorValueA4 = analogRead(A4);
 
     if ((sensorValueA3 <= SchwelleDunkelheit && !BallWasOnA3)) {
+
+        // edge detection
         ballCounter--;
         BallWasOnA3 = true;
+
     } else if (sensorValueA3 >= SchwelleDunkelheit) {
         BallWasOnA3 = false;
     }
     if (sensorValueA4 <= SchwelleDunkelheit && !BallWasOnA4) {
+
+        // edge detection
         ballCounter--;
         BallWasOnA4 = true;
     } else if (sensorValueA4 >= SchwelleDunkelheit) {
@@ -209,6 +296,81 @@ void detectRollOver() {
     if (ballCounter == 0) {
         digitalWrite(5, LOW);
         endGame();
+    }
+}
+
+void handleLEDs() {
+    if (LEDOnA1 == true) {
+        digitalWrite(13, HIGH);
+        if (millis() - LEDTimeA1 >= LEDTime) {
+            digitalWrite(13, LOW);
+            LEDOnA1 = false;
+        }
+    }
+    if (LEDOnA2 == true) {
+        digitalWrite(12, HIGH);
+        if (millis() - LEDTimeA2 >= LEDTime) {
+            digitalWrite(12, LOW);
+            LEDOnA2 = false;
+        }
+    }
+    // not 3 or 4 because it detects if ball is gone (no LED)
+    if (LEDOnA5 == true) {
+        digitalWrite(39, HIGH);
+        if (millis() - LEDTimeA5 >= LEDTime) {
+            digitalWrite(39, LOW);
+            LEDOnA5 = false;
+        }
+    }
+    if (LEDOnA6 == true) {
+        digitalWrite(38, HIGH);
+        if (millis() - LEDTimeA6 >= LEDTime) {
+            digitalWrite(38, LOW);
+            LEDOnA6 = false;
+        }
+    }
+    if (LEDOnA7 == true) {
+        digitalWrite(34, HIGH);
+        if (millis() - LEDTimeA7 >= LEDTime) {
+            digitalWrite(34, LOW);
+            LEDOnA7 = false;
+        }
+    }
+    if (LEDOnA8 == true) {
+        digitalWrite(35, HIGH);
+        if (millis() - LEDTimeA8 >= LEDTime) {
+            digitalWrite(35, LOW);
+            LEDOnA8 = false;
+        }
+    }
+    if (LEDOnA9 == true) {
+        digitalWrite(36, HIGH);
+        if (millis() - LEDTimeA9 >= LEDTime) {
+            digitalWrite(36, LOW);
+            LEDOnA9 = false;
+        }
+    }
+
+    if (LEDOnD9 == true) {
+        digitalWrite(8, HIGH);
+        if (millis() - LEDTimeD9 >= LEDTime) {
+            digitalWrite(8, LOW);
+            LEDOnD9 = false;
+        }
+    }
+    if (LEDOnD10 == true) {
+        digitalWrite(7, HIGH);
+        if (millis() - LEDTimeD10 >= LEDTime) {
+            digitalWrite(7, LOW);
+            LEDOnD10 = false;
+        }
+    }
+    if (LEDOnD11 == true) {
+        digitalWrite(6, HIGH);
+        if (millis() - LEDTimeD11 >= LEDTime) {
+            digitalWrite(6, LOW);
+            LEDOnD11 = false;
+        }
     }
 }
 
@@ -290,6 +452,7 @@ void loop() {
     }
 
     detectRollOver();
+    handleLEDs();
 
     sevseg.setNumber(counter);
     sevseg.refreshDisplay();
