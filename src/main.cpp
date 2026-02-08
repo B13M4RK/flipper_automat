@@ -85,6 +85,14 @@ unsigned long LEDTimeD10;
 bool LEDOnD11 = false;
 unsigned long LEDTimeD11;
 
+unsigned long highscore = 0;
+
+bool showHighscore = false;
+bool wasOnHighscore = false;
+bool wasOnEuro = false;
+unsigned long highscoreTime;
+unsigned long putIn1€Time;
+
 // =============== FUNCTIONS ===============
 
 int startGame() {
@@ -176,8 +184,6 @@ void detectRollOver() {
         LEDOnD9 = true;
         LEDTimeD9 = millis();
 
-    } else if (sensorValueD9 == LOW) {
-        BallWasOnD9 = false;
     }
 
     int sensorValueD10 = digitalRead(10);
@@ -190,8 +196,6 @@ void detectRollOver() {
         LEDOnD10 = true;
         LEDTimeD10 = millis();
 
-    } else if (sensorValueD10 == LOW) {
-        BallWasOnD10 = false;
     }
 
     int sensorValueD11 = digitalRead(11);
@@ -204,8 +208,14 @@ void detectRollOver() {
         LEDOnD11 = true;
         LEDTimeD11 = millis();
 
-    } else if (sensorValueD11 == LOW) {
+    }
+
+    if (BallWasOnD9 && BallWasOnD10 && BallWasOnD11) {
+        counter += 200;
+        BallWasOnD9 = false;
+        BallWasOnD10 = false;
         BallWasOnD11 = false;
+
     }
     
     // DREHRAD UND SENSOREN DARÜBER
@@ -377,6 +387,11 @@ void handleLEDs() {
 }
 
 void endGame() {
+
+    if (counter > highscore) {
+        highscore = counter;
+    }
+
     gameWorks = false;
     counter = 0;
 
@@ -384,8 +399,6 @@ void endGame() {
     lcd.print("You lost");
 
     delay(5000);
-    lcd.clear();
-    lcd.print("Put in 1€");
 }
 
 void setup() {
@@ -443,12 +456,56 @@ void setup() {
     lcd.init();
     lcd.backlight();
     lcd.clear();
-    lcd.print("Put in 1€");
+    
+}
+
+void refreshDisplays() {
+
+    if (!gameWorks && !showHighscore) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Put in 1€");
+        if (!wasOnEuro) {
+            putIn1€Time = millis();
+            wasOnEuro = true;
+        }
+        wasOnHighscore = false;
+        
+    } else if (!gameWorks && showHighscore) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Highscore:");
+        lcd.setCursor(0, 1);
+        lcd.print(highscore);
+        if (!wasOnHighscore) {
+            highscoreTime = millis();
+            wasOnHighscore = true;
+        }
+        wasOnEuro = false;
+    } else if (gameWorks) {
+        lcd.setCursor(0, 0);
+        lcd.clear();
+        lcd.print("Good luck!");
+    }
+
+    if ((!showHighscore) && (millis() - putIn1€Time >= 3000)) {
+        showHighscore = true;
+        wasOnEuro = false;
+    }
+    if  ((showHighscore) && (millis() - highscoreTime >= 3000)) {
+        showHighscore = false;
+        wasOnHighscore = false;
+    }
+
+
+    sevseg.setNumber(counter);
+    sevseg.refreshDisplay();
 }
 
 // =============== LOOP ===============
 
 void loop() {
+
     if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
         startGame();
     }
@@ -456,6 +513,5 @@ void loop() {
     detectRollOver();
     handleLEDs();
 
-    sevseg.setNumber(counter);
-    sevseg.refreshDisplay();
+    refreshDisplays();
 }
