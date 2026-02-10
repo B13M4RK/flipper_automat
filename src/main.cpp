@@ -502,13 +502,17 @@ void refreshDisplays() {
     sevseg.refreshDisplay();
 }
 
+void detectStartGame() {
+
+	if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
+        startGame();
+}
+
 // =============== LOOP ===============
 
 void loop() {
 
-    if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
-        startGame();
-    }
+	detectStartGame();
 
     detectRollOver();
     handleLEDs();
