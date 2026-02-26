@@ -504,6 +504,7 @@ void detectStartGame() {
 
 	if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
         startGame();
+    }
 }
 
 // =============== LOOP ===============
