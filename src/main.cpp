@@ -6,9 +6,12 @@ int startBtn = 39;
 bool gameWorks = false;
 
 // Ball rolls over
+int fotowiderstandA6 = A6;
+int valueA6;
+int fotowiderstandA14 = A14;
+int valueA14;
 int fotowiderstandA15 = A15;
 int valueA15;
-
 
 void setup() {
     // Startknopf
@@ -28,9 +31,12 @@ void detectStartGame() {
 }
 
 void detectBallOver() {
+
+    valueA6 = analogRead(fotowiderstandA6);
+    valueA14 = analogRead(fotowiderstandA14);
     valueA15 = analogRead(fotowiderstandA15);
-    Serial.print("A15: ");
-    Serial.println(valueA15);
+    Serial.print("A6: ");
+    Serial.println(valueA6);
 }
 
 void loop() {
