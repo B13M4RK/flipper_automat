@@ -36,11 +36,21 @@ byte counter_display_p = 24;
 unsigned long counter;
 int ballCounter;
 bool gameWorks;
-int SchwelleDunkelheit = 80; // Helligkeit, übeprüfen wenn angeschlossen
+int SchwelleDunkelheit = 50; // Helligkeit, übeprüfen wenn angeschlossen
 
 int ballInWheel = 0;
 bool turnWheel = false;
 int wheelSteps = 0;
+
+int sensorValueA1;
+int sensorValueA2;
+int sensorValueA3;
+int sensorValueA4;
+int sensorValueA5;
+int sensorValueA6;
+int sensorValueA7;
+int sensorValueA8;
+int sensorValueA9;
 
 bool BallWasOnA1 = false;
 bool BallWasOnA2 = false;
@@ -97,10 +107,7 @@ unsigned long putIn1EuroTime;
 
 // forward declarations
 void endGame();
-
-void printLightIntensity() {
-
-}
+void printLightIntensity();
 
 void startGame() {
     gameWorks = true;
@@ -121,7 +128,7 @@ void detectRollOver() {
     // --------------- GETTING POINTS ---------------
 
     // LINKS
-    int sensorValueA1 = analogRead(A1);
+    sensorValueA1 = analogRead(A1);
     if ((sensorValueA1 <= SchwelleDunkelheit) && !BallWasOnA1) {
         // edge detection
         counter += 100;
@@ -136,7 +143,7 @@ void detectRollOver() {
         BallWasOnA1 = false;
     }
 
-    int sensorValueA2 = analogRead(A2);
+    sensorValueA2 = analogRead(A2);
     if (sensorValueA2 <= SchwelleDunkelheit && !BallWasOnA2) {
         // edge detection
         counter += 100;
@@ -152,7 +159,7 @@ void detectRollOver() {
     }
 
     // RECHTS
-    int sensorValueA5 = analogRead(A5);
+    sensorValueA5 = analogRead(A5);
     if (sensorValueA5 <= SchwelleDunkelheit && !BallWasOnA5) {
         // edge detection
         counter += 100;
@@ -166,7 +173,7 @@ void detectRollOver() {
         BallWasOnA5 = false;
     }
 
-    int sensorValueA6 = analogRead(A6);
+    sensorValueA6 = analogRead(A6);
     if (sensorValueA6 <= SchwelleDunkelheit && !BallWasOnA6) {
         // edge detection
         counter += 100;
@@ -190,7 +197,6 @@ void detectRollOver() {
         // time detection
         LEDOnD9 = true;
         LEDTimeD9 = millis();
-
     }
 
     int sensorValueD10 = digitalRead(10);
@@ -202,7 +208,6 @@ void detectRollOver() {
         // time detection
         LEDOnD10 = true;
         LEDTimeD10 = millis();
-
     }
 
     int sensorValueD11 = digitalRead(11);
@@ -214,7 +219,6 @@ void detectRollOver() {
         // time detection
         LEDOnD11 = true;
         LEDTimeD11 = millis();
-
     }
 
     if (BallWasOnD9 && BallWasOnD10 && BallWasOnD11) {
@@ -222,11 +226,10 @@ void detectRollOver() {
         BallWasOnD9 = false;
         BallWasOnD10 = false;
         BallWasOnD11 = false;
-
     }
-    
+
     // DREHRAD UND SENSOREN DARÜBER
-    int sensorValueA7 = analogRead(A7);
+    sensorValueA7 = analogRead(A7);
     if (sensorValueA7 <= SchwelleDunkelheit && !BallWasOnA7) {
 
         // edge detection
@@ -241,7 +244,7 @@ void detectRollOver() {
         BallWasOnA7 = false;
     }
 
-    int sensorValueA8 = analogRead(A8);
+    sensorValueA8 = analogRead(A8);
     if (sensorValueA8 <= SchwelleDunkelheit && !BallWasOnA8) {
 
         // edge detection
@@ -271,7 +274,7 @@ void detectRollOver() {
         counter += 300;
     }
 
-    int sensorValueA9 = analogRead(A9);
+    sensorValueA9 = analogRead(A9);
     if (sensorValueA9 <= SchwelleDunkelheit && !BallWasOnA9) {
 
         // edge detection
@@ -287,8 +290,8 @@ void detectRollOver() {
     }
 
     // --------------- BALL LOST ---------------
-    int sensorValueA3 = analogRead(A3);
-    int sensorValueA4 = analogRead(A4);
+    sensorValueA3 = analogRead(A3);
+    sensorValueA4 = analogRead(A4);
 
     if ((sensorValueA3 <= SchwelleDunkelheit && !BallWasOnA3)) {
 
@@ -317,6 +320,19 @@ void detectRollOver() {
         digitalWrite(5, LOW);
         endGame();
     }
+    // printLightIntensity();
+}
+
+void printLightIntensity() {
+    Serial.println(sensorValueA1);
+    Serial.println(sensorValueA2);
+    Serial.println(sensorValueA3);
+    Serial.println(sensorValueA4);
+    Serial.println(sensorValueA5);
+    Serial.println(sensorValueA6);
+    Serial.println(sensorValueA7);
+    Serial.println(sensorValueA8);
+    Serial.println(sensorValueA9);
 }
 
 void handleLEDs() {
@@ -459,14 +475,13 @@ void setup() {
     // -------------Andere-------------
     gameWorks = false;
     // Startknopf
-    pinMode(27, INPUT);
+    pinMode(20, INPUT);
     // Münzeinwurf
     pinMode(A13, INPUT);
     // Best Player Anzeige (LCD)
     lcd.init();
     lcd.backlight();
     lcd.clear();
-    
 }
 
 void refreshDisplays() {
@@ -480,7 +495,7 @@ void refreshDisplays() {
             wasOnEuro = true;
         }
         wasOnHighscore = false;
-        
+
     } else if (!gameWorks && showHighscore) {
         lcd.clear();
         lcd.setCursor(0, 0);
@@ -502,11 +517,10 @@ void refreshDisplays() {
         showHighscore = true;
         wasOnEuro = false;
     }
-    if  ((showHighscore) && (millis() - highscoreTime >= 3000)) {
+    if ((showHighscore) && (millis() - highscoreTime >= 3000)) {
         showHighscore = false;
         wasOnHighscore = false;
     }
-
 
     sevseg.setNumber(counter);
     sevseg.refreshDisplay();
@@ -514,19 +528,20 @@ void refreshDisplays() {
 
 void detectStartGame() {
 
-	if ((digitalRead(27) == HIGH) && (gameWorks == false) /*&& Münzeinwurf*/) {
+    if ((digitalRead(20) == LOW) && (gameWorks == false) /*&& Münzeinwurf*/) {
         startGame();
+        Serial.println("game started");
     }
 }
 
 // =============== LOOP ===============
 
 void loop() {
-    printLightIntensity();
 
-	detectStartGame();
+    detectStartGame();
 
     detectRollOver();
+    printLightIntensity();
     handleLEDs();
 
     refreshDisplays();
