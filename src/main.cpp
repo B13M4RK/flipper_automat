@@ -98,6 +98,10 @@ unsigned long putIn1EuroTime;
 // forward declarations
 void endGame();
 
+void printLightIntensity() {
+
+}
+
 void startGame() {
     gameWorks = true;
     counter = 0;
@@ -405,6 +409,9 @@ void endGame() {
 }
 
 void setup() {
+    Serial.begin(9600);
+    Serial.println("Serial Monitor connectet");
+
     // -------------BALL-------------
     // Ballausgabe
     pinMode(40, OUTPUT);
@@ -515,6 +522,7 @@ void detectStartGame() {
 // =============== LOOP ===============
 
 void loop() {
+    printLightIntensity();
 
 	detectStartGame();
 
