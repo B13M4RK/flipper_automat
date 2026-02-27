@@ -5,6 +5,10 @@ int startLED = 38;
 int startBtn = 39;
 bool gameWorks = false;
 
+// Ball rolls over
+int fotowiderstandA15 = A15;
+int valueA15;
+
 
 void setup() {
     // Startknopf
@@ -19,12 +23,18 @@ void detectStartGame() {
 
     if (digitalRead(startBtn) == HIGH) {
         gameWorks = true;
-        digitalWrite(38, HIGH);
+        digitalWrite(startLED, HIGH);
     }
+}
+
+void detectBallOver() {
+    valueA15 = analogRead(fotowiderstandA15);
+    Serial.print("A15: ");
+    Serial.println(valueA15);
 }
 
 void loop() {
 
     detectStartGame();
-
+    detectBallOver();
 }
