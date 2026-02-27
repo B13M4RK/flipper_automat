@@ -18,21 +18,22 @@ SevSeg sevseg;
 
 // =============== Global Variables ===============
 
-int counter_display_1 = 2;
-int counter_display_2 = 16;
-int counter_display_3 = 17;
-int counter_display_4 = 19;
+// pin numbers for the 7‑segment display (byte avoids narrowing warnings)
+byte counter_display_1 = 2;
+byte counter_display_2 = 16;
+byte counter_display_3 = 17;
+byte counter_display_4 = 19;
 
-int counter_display_a = 14;
-int counter_display_b = 18;
-int counter_display_c = 23;
-int counter_display_d = 25;
-int counter_display_e = 26;
-int counter_display_f = 15;
-int counter_display_g = 22;
-int counter_display_p = 24;
+byte counter_display_a = 14;
+byte counter_display_b = 18;
+byte counter_display_c = 23;
+byte counter_display_d = 25;
+byte counter_display_e = 26;
+byte counter_display_f = 15;
+byte counter_display_g = 22;
+byte counter_display_p = 24;
 
-int counter;
+unsigned long counter;
 int ballCounter;
 bool gameWorks;
 int SchwelleDunkelheit = 80; // Helligkeit, übeprüfen wenn angeschlossen
@@ -55,7 +56,8 @@ bool BallWasOnD9 = false;
 bool BallWasOnD10 = false;
 bool BallWasOnD11 = false;
 
-int LEDTime = 2000;
+// delay used for LEDs (use unsigned long to match millis())
+unsigned long LEDTime = 2000UL;
 
 bool LEDOnA1 = false;
 unsigned long LEDTimeA1;
@@ -89,11 +91,14 @@ bool showHighscore = false;
 bool wasOnHighscore = false;
 bool wasOnEuro = false;
 unsigned long highscoreTime;
-unsigned long putIn1€Time;
+unsigned long putIn1EuroTime;
 
 // =============== FUNCTIONS ===============
 
-int startGame() {
+// forward declarations
+void endGame();
+
+void startGame() {
     gameWorks = true;
     counter = 0;
 
@@ -106,7 +111,7 @@ int startGame() {
     for (int pin = 3; pin <= 5; pin++) {
         digitalWrite(pin, HIGH);
     }
-};
+}
 
 void detectRollOver() {
     // --------------- GETTING POINTS ---------------
@@ -464,7 +469,7 @@ void refreshDisplays() {
         lcd.setCursor(0, 0);
         lcd.print("Put in 1€");
         if (!wasOnEuro) {
-            putIn1€Time = millis();
+            putIn1EuroTime = millis();
             wasOnEuro = true;
         }
         wasOnHighscore = false;
@@ -486,7 +491,7 @@ void refreshDisplays() {
         lcd.print("Good luck!");
     }
 
-    if ((!showHighscore) && (millis() - putIn1€Time >= 3000)) {
+    if ((!showHighscore) && (millis() - putIn1EuroTime >= 3000)) {
         showHighscore = true;
         wasOnEuro = false;
     }
