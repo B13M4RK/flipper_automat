@@ -54,8 +54,13 @@ void detectBallOver() {
  
 }
 
+void refreshDisplays() {
+    // LCD DISPLAY INITIALIZE
+}
+
 void loop() {
 
     detectStartGame();
     detectBallOver();
+    refreshDisplays();
 }
