@@ -63,12 +63,8 @@ void detectBallOver() {
     valueA6 = analogRead(fotowiderstandA6);
     valueA14 = analogRead(fotowiderstandA14);
     valueA15 = analogRead(fotowiderstandA15);
-    Serial.print("A6: ");
     Serial.println(valueA6);
-    Serial.print("A14: ");
-    Serial.println(valueA14);
-    Serial.print("A15: ");
-    Serial.println(valueA15);
+
 
     if (valueA6 <= 100 && !ballWasOnA6) {
         ballWasOnA6 = true;
