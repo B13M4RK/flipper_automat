@@ -1,5 +1,12 @@
 #include <Arduino.h>
 
+// LCD Display
+#include "LiquidCrystal_I2C.h"
+#include "Wire.h"
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+bool pressStartIsShown = false;
+bool goodLuckIsShown = false;
+
 // Startknopf
 int startLED = 38;
 int startBtn = 39;
@@ -24,6 +31,7 @@ int LEDA15 = 51;
 // Counter
 long counter = 0;
 
+
 void setup() {
     // Startknopf
     pinMode(startLED, OUTPUT);
@@ -31,6 +39,10 @@ void setup() {
 
     // Serial Monitor
     Serial.begin(9600);
+
+    // LCD Display
+    lcd.init();
+    lcd.backlight();
 
     // LEDs Fotowiderstände
     pinMode(LEDA6, OUTPUT);
@@ -96,7 +108,16 @@ void detectBallOver() {
 }
 
 void refreshDisplays() {
-    // LCD DISPLAY INITIALIZE
+    if (!gameWorks && !pressStartIsShown) {
+        lcd.setCursor(0, 0);
+        lcd.print("Press Start");
+        pressStartIsShown = true;
+    }
+    if (gameWorks && !goodLuckIsShown) {
+        lcd.clear();
+        lcd.print("Good Luck!");
+        goodLuckIsShown = true;
+    }
 }
 
 void loop() {
