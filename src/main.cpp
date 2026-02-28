@@ -9,10 +9,17 @@ bool gameWorks = false;
 int fotowiderstandA6 = A6;
 int valueA6;
 bool ballWasOnA6 = false;
+int LEDA6 = 53;
+
 int fotowiderstandA14 = A14;
 int valueA14;
+bool ballWasOnA14 = false;
+int LEDA14 = 52;
+
 int fotowiderstandA15 = A15;
 int valueA15;
+bool ballWasOnA15 = false;
+int LEDA15 = 51;
 
 // Counter
 long counter = 0;
@@ -24,6 +31,11 @@ void setup() {
 
     // Serial Monitor
     Serial.begin(9600);
+
+    // LEDs Fotowiderstände
+    pinMode(LEDA6, OUTPUT);
+    pinMode(LEDA14, OUTPUT);
+    pinMode(LEDA15, OUTPUT);
 }
 
 void detectStartGame() {
@@ -39,19 +51,48 @@ void detectBallOver() {
     valueA6 = analogRead(fotowiderstandA6);
     valueA14 = analogRead(fotowiderstandA14);
     valueA15 = analogRead(fotowiderstandA15);
-    // Serial.print("A6: ");
-    // Serial.println(valueA6);
+    Serial.print("A6: ");
+    Serial.println(valueA6);
+    Serial.print("A14: ");
+    Serial.println(valueA14);
+    Serial.print("A15: ");
+    Serial.println(valueA15);
 
-    if (valueA6 <= 10 && !ballWasOnA6) {
+    if (valueA6 <= 100 && !ballWasOnA6) {
         ballWasOnA6 = true;
         counter += 100;
         Serial.print("Counter: ");
         Serial.println(counter);
+        digitalWrite(LEDA6, HIGH);
 
-    } else if (valueA6 >= 15) {
+    } else if (valueA6 >= 110) {
         ballWasOnA6 = false;
+        digitalWrite(LEDA6, LOW);
     }
- 
+
+    if (valueA14 <= 100 && !ballWasOnA14) {
+        ballWasOnA14 = true;
+        counter += 100;
+        Serial.print("Counter: ");
+        Serial.println(counter);
+        digitalWrite(LEDA14, HIGH);
+
+    } else if (valueA14 >= 110) {
+        ballWasOnA14 = false;
+        digitalWrite(LEDA14, LOW);
+    }
+
+    if (valueA15 <= 100 && !ballWasOnA15) {
+        ballWasOnA15 = true;
+        counter += 100;
+        Serial.print("Counter: ");
+        Serial.println(counter);
+        digitalWrite(LEDA15, HIGH);
+
+    } else if (valueA15 >= 110) {
+        ballWasOnA15 = false;
+        digitalWrite(LEDA15, LOW);
+    }
 }
 
 void refreshDisplays() {
