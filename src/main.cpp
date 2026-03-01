@@ -13,24 +13,14 @@ int startBtn = 39;
 bool gameWorks = false;
 
 // Ball rolls over
-int fotowiderstandA6 = A6;
-int valueA6;
-bool ballWasOnA6 = false;
-int LEDA6 = 44;
+int fotowiderstandPins[10] = {A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
+int valueA[10];
+bool ballWasOnA[10] = {false};
 
-int fotowiderstandA7 = A7;
-int valueA7;
-bool ballWasOnA7 = false;
-int LEDA7 = 46;
-
-int fotowiderstandA8 = A8;
-int valueA8;
-bool ballWasOnA8 = false;
-int LEDA8 = 48;
+int LEDA[10] = {44, 46, 48, 50, 52, 53, 51, 49, 47, 45};
 
 // Counter
 long counter = 0;
-
 
 void setup() {
     // Startknopf
@@ -45,9 +35,9 @@ void setup() {
     lcd.backlight();
 
     // LEDs Fotowiderstände
-    pinMode(LEDA6, OUTPUT);
-    pinMode(LEDA7, OUTPUT);
-    pinMode(LEDA8, OUTPUT);
+    for (int i = 0; i < 10; i++) {
+        pinMode(LEDA[i], OUTPUT);
+    }
 }
 
 void detectStartGame() {
@@ -60,47 +50,23 @@ void detectStartGame() {
 
 void detectBallOver() {
 
-    valueA6 = analogRead(fotowiderstandA6);
-    valueA7 = analogRead(fotowiderstandA7);
-    valueA8 = analogRead(fotowiderstandA8);
-    //Serial.print("connected");
-    //Serial.println(valueA6);
-
-
-    if (valueA6 <= 100 && !ballWasOnA6) {
-        ballWasOnA6 = true;
-        counter += 100;
-        Serial.println("CounterA6: "+String(counter));
-        Serial.println("valueA6: "+String(valueA6));
-        digitalWrite(LEDA6, HIGH);
-
-    } else if (valueA6 >= 110) {
-        ballWasOnA6 = false;
-        digitalWrite(LEDA6, LOW);
+    for (int i = 0; i < 10; i++) {
+        valueA[i] = analogRead(fotowiderstandPins[i]);
     }
 
-    if (valueA7 <= 100 && !ballWasOnA7) {
-        ballWasOnA7 = true;
-        counter += 100;
-        Serial.println("CounterA7: " + String(counter));
-        Serial.println("valueA7: " + String(valueA7));
-        digitalWrite(LEDA7, HIGH);
+    for (int i = 0; i < 10; i++) {
+        if (valueA[i] <= 110 && !ballWasOnA[i]) {
+            ballWasOnA[i] = true;
+            counter += 100;
 
-    } else if (valueA7 >= 110) {
-        ballWasOnA7 = false;
-        digitalWrite(LEDA7, LOW);
-    }
+            Serial.println("Counter A" + String(i + 6) + ": " + String(counter));
+            Serial.println("ValueA" + String(i + 6) + ": " + String(valueA[i]));
 
-    if (valueA8 <= 100 && !ballWasOnA8) {
-        ballWasOnA8 = true;
-        counter += 100;
-        Serial.println("CounterA8: " + String(counter));
-        Serial.println("valueA8: " + String(valueA8));
-        digitalWrite(LEDA8, HIGH);
-
-    } else if (valueA8 >= 110) {
-        ballWasOnA8 = false;
-        digitalWrite(LEDA8, LOW);
+            digitalWrite(LEDA[i], HIGH);
+        } else if (valueA[i] > 115) {
+            ballWasOnA[i] = false;
+            digitalWrite(LEDA[i], LOW);
+        }
     }
 }
 
