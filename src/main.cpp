@@ -63,15 +63,15 @@ void detectBallOver() {
     valueA6 = analogRead(fotowiderstandA6);
     valueA7 = analogRead(fotowiderstandA7);
     valueA8 = analogRead(fotowiderstandA8);
-    Serial.print("connected");
-    Serial.println(valueA6);
+    //Serial.print("connected");
+    //Serial.println(valueA6);
 
 
     if (valueA6 <= 100 && !ballWasOnA6) {
         ballWasOnA6 = true;
         counter += 100;
-        Serial.print("Counter: ");
-        Serial.println(counter);
+        Serial.println("CounterA6: "+String(counter));
+        Serial.println("valueA6: "+String(valueA6));
         digitalWrite(LEDA6, HIGH);
 
     } else if (valueA6 >= 110) {
@@ -82,8 +82,8 @@ void detectBallOver() {
     if (valueA7 <= 100 && !ballWasOnA7) {
         ballWasOnA7 = true;
         counter += 100;
-        Serial.print("Counter: ");
-        Serial.println(counter);
+        Serial.println("CounterA7: " + String(counter));
+        Serial.println("valueA7: " + String(valueA7));
         digitalWrite(LEDA7, HIGH);
 
     } else if (valueA7 >= 110) {
@@ -94,8 +94,8 @@ void detectBallOver() {
     if (valueA8 <= 100 && !ballWasOnA8) {
         ballWasOnA8 = true;
         counter += 100;
-        Serial.print("Counter: ");
-        Serial.println(counter);
+        Serial.println("CounterA8: " + String(counter));
+        Serial.println("valueA8: " + String(valueA8));
         digitalWrite(LEDA8, HIGH);
 
     } else if (valueA8 >= 110) {
