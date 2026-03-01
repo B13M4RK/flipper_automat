@@ -16,17 +16,17 @@ bool gameWorks = false;
 int fotowiderstandA6 = A6;
 int valueA6;
 bool ballWasOnA6 = false;
-int LEDA6 = 53;
+int LEDA6 = 44;
 
-int fotowiderstandA14 = A14;
-int valueA14;
-bool ballWasOnA14 = false;
-int LEDA14 = 52;
+int fotowiderstandA7 = A7;
+int valueA7;
+bool ballWasOnA7 = false;
+int LEDA7 = 46;
 
-int fotowiderstandA15 = A15;
-int valueA15;
-bool ballWasOnA15 = false;
-int LEDA15 = 51;
+int fotowiderstandA8 = A8;
+int valueA8;
+bool ballWasOnA8 = false;
+int LEDA8 = 48;
 
 // Counter
 long counter = 0;
@@ -46,8 +46,8 @@ void setup() {
 
     // LEDs Fotowiderstände
     pinMode(LEDA6, OUTPUT);
-    pinMode(LEDA14, OUTPUT);
-    pinMode(LEDA15, OUTPUT);
+    pinMode(LEDA7, OUTPUT);
+    pinMode(LEDA8, OUTPUT);
 }
 
 void detectStartGame() {
@@ -61,8 +61,9 @@ void detectStartGame() {
 void detectBallOver() {
 
     valueA6 = analogRead(fotowiderstandA6);
-    valueA14 = analogRead(fotowiderstandA14);
-    valueA15 = analogRead(fotowiderstandA15);
+    valueA7 = analogRead(fotowiderstandA7);
+    valueA8 = analogRead(fotowiderstandA8);
+    Serial.print("connected");
     Serial.println(valueA6);
 
 
@@ -78,28 +79,28 @@ void detectBallOver() {
         digitalWrite(LEDA6, LOW);
     }
 
-    if (valueA14 <= 100 && !ballWasOnA14) {
-        ballWasOnA14 = true;
+    if (valueA7 <= 100 && !ballWasOnA7) {
+        ballWasOnA7 = true;
         counter += 100;
         Serial.print("Counter: ");
         Serial.println(counter);
-        digitalWrite(LEDA14, HIGH);
+        digitalWrite(LEDA7, HIGH);
 
-    } else if (valueA14 >= 110) {
-        ballWasOnA14 = false;
-        digitalWrite(LEDA14, LOW);
+    } else if (valueA7 >= 110) {
+        ballWasOnA7 = false;
+        digitalWrite(LEDA7, LOW);
     }
 
-    if (valueA15 <= 100 && !ballWasOnA15) {
-        ballWasOnA15 = true;
+    if (valueA8 <= 100 && !ballWasOnA8) {
+        ballWasOnA8 = true;
         counter += 100;
         Serial.print("Counter: ");
         Serial.println(counter);
-        digitalWrite(LEDA15, HIGH);
+        digitalWrite(LEDA8, HIGH);
 
-    } else if (valueA15 >= 110) {
-        ballWasOnA15 = false;
-        digitalWrite(LEDA15, LOW);
+    } else if (valueA8 >= 110) {
+        ballWasOnA8 = false;
+        digitalWrite(LEDA8, LOW);
     }
 }
 

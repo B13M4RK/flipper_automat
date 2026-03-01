@@ -13,7 +13,7 @@ Stepper Motor(SPU, 33, 32, 31, 30); // IN 1, 2, 3, 4
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // digit display
-#include "SevSeg.h"
+#include "SevSeg.h"                               
 SevSeg sevseg;
 
 // =============== Global Variables ===============

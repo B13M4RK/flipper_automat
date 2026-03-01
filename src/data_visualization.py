@@ -19,7 +19,7 @@ def readData():
   data = ser.readline().decode('utf-8').rstrip()
   if data:
     label_A6.configure(text=f"A6: {data}")
-  root.after(10,readData)
+  root.after(10, readData)
   
   
   
