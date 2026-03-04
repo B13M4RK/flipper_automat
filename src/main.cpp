@@ -7,6 +7,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 bool pressStartIsShown = false;
 bool goodLuckIsShown = false;
 
+// 7 digit display
+#include "SevSeg.h"
+SevSeg sevseg;
+
 // Startknopf
 int startLED = 22;
 int startBtn = 23;
@@ -41,6 +45,13 @@ void setup() {
     lcd.clear();
     lcd.print("Initialize");
     delay(1000);
+
+    // 7 digit display
+    byte numDigits = 4;
+    byte digitPins[] = {41, 40, 39, 38};
+    byte segmentPins[] = {32, 7, 34, 36, 37, 31, 33, 35};
+    sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
+    sevseg.setBrightness(90);
 }
 
 void detectStartGame() {
@@ -94,4 +105,8 @@ void loop() {
     detectStartGame();
     detectBallOver();
     refreshDisplays();
+
+    sevseg.setNumber(1234, 2);
+    sevseg.refreshDisplay();
+    
 }

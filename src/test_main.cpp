@@ -1,7 +1,10 @@
-#include "SevSeg.h" 
+// UPLOAD>>C :\Users\pauld\.platformio\penv\Scripts\platformio.exe run - e uno-- target upload
+
+#include "SevSeg.h"
 #include <Arduino.h>
 
-SevSeg sevseg; 
+SevSeg sevseg;
+int counter = 4567;
 
 void setup() {
     byte numDigits = 4;
@@ -11,7 +14,7 @@ void setup() {
 }
 
 void loop() {
-    sevseg.setNumber(1234, 2);
+    sevseg.setNumber(counter, 2);
     sevseg.refreshDisplay();
     sevseg.setBrightness(90);
 }
