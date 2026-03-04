@@ -48,8 +48,8 @@ void setup() {
 
     // 7 digit display
     byte numDigits = 4;
-    byte digitPins[] = {41, 40, 39, 38};
-    byte segmentPins[] = {32, 7, 34, 36, 37, 31, 33, 35};
+    byte digitPins[] = {2, 3, 4, 5};
+    byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
     sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
     sevseg.setBrightness(90);
 }
@@ -86,6 +86,10 @@ void detectBallOver() {
 }
 
 void refreshDisplays() {
+    // 7 digit display
+    sevseg.setNumber(counter);
+    sevseg.refreshDisplay();
+
     // LCD
     if (!gameWorks && !pressStartIsShown) {
         lcd.setCursor(0, 0);
@@ -102,11 +106,12 @@ void refreshDisplays() {
 
 void loop() {
 
-    detectStartGame();
-    detectBallOver();
     refreshDisplays();
+    detectStartGame();
+    refreshDisplays();
+    detectBallOver();
+    
 
-    sevseg.setNumber(1234, 2);
-    sevseg.refreshDisplay();
+    
     
 }
