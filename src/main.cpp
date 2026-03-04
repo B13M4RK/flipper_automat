@@ -8,8 +8,8 @@ bool pressStartIsShown = false;
 bool goodLuckIsShown = false;
 
 // Startknopf
-int startLED = 38;
-int startBtn = 39;
+int startLED = 22;
+int startBtn = 23;
 bool gameWorks = false;
 
 // Ball rolls over
@@ -38,6 +38,9 @@ void setup() {
     for (int i = 0; i < 10; i++) {
         pinMode(LEDA[i], OUTPUT);
     }
+    lcd.clear();
+    lcd.print("Initialize");
+    delay(1000);
 }
 
 void detectStartGame() {
@@ -68,11 +71,14 @@ void detectBallOver() {
             digitalWrite(LEDA[i], LOW);
         }
     }
+    Serial.println(counter);
 }
 
 void refreshDisplays() {
+    // LCD
     if (!gameWorks && !pressStartIsShown) {
         lcd.setCursor(0, 0);
+        lcd.clear();
         lcd.print("Press Start");
         pressStartIsShown = true;
     }
