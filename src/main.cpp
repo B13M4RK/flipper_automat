@@ -6,6 +6,7 @@
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 bool pressStartIsShown = false;
 bool goodLuckIsShown = false;
+int shownCounter = 0;
 
 // Startknopf
 int startLED = 38;
@@ -78,8 +79,19 @@ void refreshDisplays() {
     }
     if (gameWorks && !goodLuckIsShown) {
         lcd.clear();
+        lcd.setCursor(0, 0);
         lcd.print("Good Luck!");
+        lcd.setCursor(0, 1);
+        lcd.print(counter);
         goodLuckIsShown = true;
+    }
+    if (shownCounter != counter) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Good Luck!");
+        lcd.setCursor(0, 1);
+        lcd.print(counter);
+        shownCounter = counter;
     }
 }
 
