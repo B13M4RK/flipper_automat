@@ -7,17 +7,13 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 bool pressStartIsShown = false;
 bool goodLuckIsShown = false;
 
-// 7 digit display
-#include "SevSeg.h"
-SevSeg sevseg;
-
 // Startknopf
-int startLED = 22;
-int startBtn = 23;
+int startLED = 38;
+int startBtn = 39;
 bool gameWorks = false;
 
 // Ball rolls over
-int fotowiderstandPins[10] = {A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
+int ballSensors[10] = {A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
 int valueA[10];
 bool ballWasOnA[10] = {false};
 
@@ -42,16 +38,6 @@ void setup() {
     for (int i = 0; i < 10; i++) {
         pinMode(LEDA[i], OUTPUT);
     }
-    lcd.clear();
-    lcd.print("Initialize");
-    delay(1000);
-
-    // 7 digit display
-    byte numDigits = 4;
-    byte digitPins[] = {2, 3, 4, 5};
-    byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
-    sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
-    sevseg.setBrightness(90);
 }
 
 void detectStartGame() {
@@ -65,11 +51,11 @@ void detectStartGame() {
 void detectBallOver() {
 
     for (int i = 0; i < 10; i++) {
-        valueA[i] = analogRead(fotowiderstandPins[i]);
+        valueA[i] = analogRead(ballSensors[i]);
     }
 
     for (int i = 0; i < 10; i++) {
-        if (valueA[i] <= 110 && !ballWasOnA[i]) {
+        if (valueA[i] <= 50 && !ballWasOnA[i]) {
             ballWasOnA[i] = true;
             counter += 100;
 
@@ -77,23 +63,16 @@ void detectBallOver() {
             Serial.println("ValueA" + String(i + 6) + ": " + String(valueA[i]));
 
             digitalWrite(LEDA[i], HIGH);
-        } else if (valueA[i] > 115) {
+        } else if (valueA[i] > 80) {
             ballWasOnA[i] = false;
             digitalWrite(LEDA[i], LOW);
         }
     }
-    Serial.println(counter);
 }
 
 void refreshDisplays() {
-    // 7 digit display
-    sevseg.setNumber(counter);
-    sevseg.refreshDisplay();
-
-    // LCD
     if (!gameWorks && !pressStartIsShown) {
         lcd.setCursor(0, 0);
-        lcd.clear();
         lcd.print("Press Start");
         pressStartIsShown = true;
     }
@@ -106,12 +85,7 @@ void refreshDisplays() {
 
 void loop() {
 
-    refreshDisplays();
     detectStartGame();
-    refreshDisplays();
     detectBallOver();
-    
-
-    
-    
+    refreshDisplays();
 }
