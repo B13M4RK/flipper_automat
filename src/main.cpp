@@ -81,15 +81,12 @@ void refreshDisplays() {
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Good Luck!");
-        lcd.setCursor(0, 1);
-        lcd.print(counter);
         goodLuckIsShown = true;
     }
     if (shownCounter != counter) {
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print("Good Luck!");
-        lcd.setCursor(0, 1);
+        lcd.print("Points: ");
         lcd.print(counter);
         shownCounter = counter;
     }
@@ -98,8 +95,9 @@ void refreshDisplays() {
 void loop() {
 
     detectStartGame();
-    if (gameWorks == true) {
+    if (gameWorks) {
         detectBallOver();
-        refreshDisplays();
     }
+    refreshDisplays();
+    Serial.println("counter");
 }
