@@ -73,6 +73,8 @@ void detectBallOver() {
 }
 
 void refreshDisplays() {
+
+    // lcd display
     if (!gameWorks && !pressStartIsShown) {
         lcd.setCursor(0, 0);
         lcd.print("Press Start");
@@ -92,15 +94,23 @@ void refreshDisplays() {
         lcd.print(counter);
         shownCounter = counter;
     }
+
+    // 7 digit display
+    Serial1.println(counter);
 }
 
 void loop() {
 
+    // detects if start button is pressed
     detectStartGame();
+
+    // if gameworks it is checked whether a ball rolls over sensor
     if (gameWorks == true) {
         detectBallOver();
     }
+
+    // refreshes displays
     refreshDisplays();
 
-    Serial1.println(counter);
+    
 }
