@@ -18,7 +18,7 @@ int ballSensors[10] = {A6, A7, A8, A9, A10, A11, A12, A13, A14, A15};
 int valueA[10];
 bool ballWasOnA[10] = {false};
 
-int LEDA[10] = {44, 46, 48, 50, 52, 53, 51, 49, 47, 45};
+int LEDA[10] = {53, 52, 51, 50, 49, 48, 47, 46, 45, 44};
 
 // Counter
 long counter = 0;
@@ -60,8 +60,8 @@ void detectBallOver() {
             ballWasOnA[i] = true;
             counter += 100;
 
-            Serial.println("Counter A" + String(i + 6) + ": " + String(counter));
-            Serial.println("ValueA" + String(i + 6) + ": " + String(valueA[i]));
+            // Serial.println("Counter A" + String(i + 6) + ": " + String(counter));
+            // Serial.println("ValueA" + String(i + 6) + ": " + String(valueA[i]));
 
             digitalWrite(LEDA[i], HIGH);
         } else if (valueA[i] > 80) {
@@ -98,6 +98,8 @@ void refreshDisplays() {
 void loop() {
 
     detectStartGame();
-    detectBallOver();
-    refreshDisplays();
+    if (gameWorks == true) {
+        detectBallOver();
+        refreshDisplays();
+    }
 }
