@@ -1,34 +1,34 @@
-// 7 digit display
 #include "SevSeg.h"
 SevSeg sevseg;
 
-// arduino communication
-String msg = "";
+char buffer[10];
+byte index = 0;
+int counter = 0;
 
 void setup() {
-  // 7 digit display
   byte numDigits = 4;
   byte digitPins[] = {2, 3, 4, 5};
   byte segmentPins[] = {6, 7, 8, 9, 10, 11, 12, 13};
   sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
+  sevseg.setBrightness(90);
 
-  // arduino communication
   Serial.begin(9600);
 }
-void loop() {
 
-  // --- Counter vom Mega empfangen ---
+void loop() {
   while (Serial.available()) {
     char c = Serial.read();
-    if (c == '\n') {
-      long value = msg.toInt();
-      sevseg.setNumber(value);
-      msg = "";
-    } else {
-      msg += c;
+
+    if (c == '\n') {               // Zahl vollständig
+      buffer[index] = '\0';
+      counter = atoi(buffer);      // in int umwandeln
+      index = 0;                   // Puffer zurücksetzen
+    } 
+    else if (index < 9) {
+      buffer[index++] = c;         // Zeichen sammeln
     }
   }
 
-  // --- Display aktualisieren ---
-  sevseg.refreshDisplay();
+  sevseg.setNumber(counter);
+  sevseg.refreshDisplay();         // läuft jetzt konstant
 }

@@ -30,6 +30,7 @@ void setup() {
 
     // Serial Monitor
     Serial.begin(9600);
+    Serial1.begin(9600);
 
     // LCD Display
     lcd.init();
@@ -100,4 +101,6 @@ void loop() {
         detectBallOver();
     }
     refreshDisplays();
+
+    Serial1.println(counter);
 }
