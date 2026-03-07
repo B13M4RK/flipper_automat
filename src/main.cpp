@@ -81,6 +81,8 @@ void refreshDisplays() {
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Good Luck!");
+        lcd.setCursor(0, 1);
+        lcd.print(counter);
         goodLuckIsShown = true;
     }
     if (shownCounter != counter) {
@@ -99,5 +101,5 @@ void loop() {
         detectBallOver();
     }
     refreshDisplays();
-    Serial.println("counter");
+    Serial.println(counter);
 }
